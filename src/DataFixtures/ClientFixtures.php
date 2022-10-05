@@ -9,7 +9,7 @@ use App\Entity\Client;
 use App\Entity\SecteurActivite;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class ClientFixtures extends Fixture implements DependentFixtureInterface
+class ClientFixtures extends Fixture 
 {
     private $faker;
     
@@ -28,17 +28,12 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
             ->setrue($this->faker->text());
             $Client->setville($this->faker->text());
             $Client->setcodepostal($this->faker->numberBetween());
-            
-            $manager->persist($Client);
+            $Client->setsecteur($this->getReference('SecteurActivite'.mt_rand(0,9)));
+            $Client->persist($Client);
+            $this->addReference('Client'.$i, $Client);
         }
 
         $manager->flush();
     }
 
-    public function getDependencies()
-    {
-        return [
- 
-        ];
-    }
 }
